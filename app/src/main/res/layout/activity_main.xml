@@ -7,13 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <VideoView
+        android:id="@+id/backgroundanim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+
+        />
+
     <TextView
         android:id="@+id/tv_playtime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:gravity="center"
-        android:text="Play time!"
+        android:text="@string/play_time"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/white"
@@ -56,9 +64,10 @@
 
     </RadioGroup>
 <android.widget.Button
+    android:id="@+id/startquiz"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Start quiz"
+    android:text="@string/start_quiz"
     android:textSize="30sp"
     android:textColor="@color/white"
     android:paddingStart="10dp"
