@@ -36,25 +36,28 @@
         android:layout_margin="20dp"
         >
         <RadioButton
+            android:id="@+id/easy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Easy"
+            android:text="@string/easy"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             />
         <RadioButton
+            android:id="@+id/medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium"
+            android:text="@string/medium"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             />
         <RadioButton
+            android:id="@+id/hard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hard"
+            android:text="@string/hard"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -64,7 +67,7 @@
 
     </RadioGroup>
 <android.widget.Button
-    android:id="@+id/startquiz"
+    android:id="@+id/startQuiz"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/start_quiz"
