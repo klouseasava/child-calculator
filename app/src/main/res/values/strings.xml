@@ -26,8 +26,11 @@
     <string name="equal">=</string>
     <string name="zero">0</string>
     <string name="point">.</string>
-    <string name="back">back</string>
+
     <string name="submit">submit</string>
     <string name="hint">"waiting"</string>
+    <string name="pass">pass</string>
+    <string name="back">⬅</string>
+    <string name="done">Done</string>
 
 </resources>
