@@ -3,98 +3,136 @@ package com.example.child_calculator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.*;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
 public class Results extends AppCompatActivity {
 
+    VideoView videoView;
+
+    private void playSound(int resId) {
+        MediaPlayer mp = MediaPlayer.create(this, resId);
+        mp.setOnCompletionListener(MediaPlayer::release);
+        mp.start();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_results);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        // 🎥 LOOPING VIDEO
+        videoView = findViewById(R.id.resultsvideo);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.result_anim);
+        videoView.setVideoURI(uri);
+        videoView.setOnPreparedListener(mp -> {
+            mp.setLooping(true);
+            mp.setVolume(0f,0f);
         });
+        videoView.start();
 
-        // Get data from Play activity
+        // DATA
         Intent intent = getIntent();
-        int score = intent.getIntExtra("SCORE", 0);
-        int total = intent.getIntExtra("TOTAL", 10);
+        int score = intent.getIntExtra("SCORE",0);
+        int total = intent.getIntExtra("TOTAL",10);
+
         ArrayList<String> questions = intent.getStringArrayListExtra("QUESTIONS");
         ArrayList<String> correctAnswers = intent.getStringArrayListExtra("ANSWERS");
         ArrayList<String> userAnswers = intent.getStringArrayListExtra("USER_ANSWERS");
 
-        // Grade TextView
-        TextView passText = findViewById(R.id.pass);
-        float percent = (score * 100f) / total;
-        String gradeMessage;
-        if (percent >= 90) gradeMessage = "Excellent!";
-        else if (percent >= 70) gradeMessage = "Good Job!";
-        else if (percent >= 50) gradeMessage = "Not Bad!";
-        else gradeMessage = "Try Again!";
-        passText.setText(gradeMessage + " You scored " + score + "/" + total);
+        float percent = (score*100f)/total;
 
-        // ProgressBar animation
-        ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
-        progressBar.setMax(total);
-        progressBar.setProgress(0);
-        progressBar.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 50));
-        ((LinearLayout) findViewById(R.id.main)).addView(progressBar, 1);
+        // PASS TEXT
+        TextView pass = findViewById(R.id.pass);
+        pass.setText("Score: "+score+"/"+total);
 
-        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, score);
-        animation.setDuration(1500);
-        animation.start();
+        LinearLayout content = findViewById(R.id.contentLayout);
 
-        // ScrollView for questions
-        ScrollView scrollView = new ScrollView(this);
-        LinearLayout questionLayout = new LinearLayout(this);
-        questionLayout.setOrientation(LinearLayout.VERTICAL);
-        scrollView.addView(questionLayout);
-
-        // Display each question and correct answer, highlighting wrong answers
-        for (int i = 0; i < questions.size(); i++) {
-            TextView tv = new TextView(this);
-            String displayText = (i + 1) + ". " + questions.get(i)
-                    + " = " + correctAnswers.get(i)
-                    + " | Your answer: " + userAnswers.get(i);
-            tv.setText(displayText);
-            tv.setTextSize(22f);
-            tv.setPadding(10, 10, 10, 10);
-
-            // Color code based on correctness
-            if (correctAnswers.get(i).equals(userAnswers.get(i))) {
-                tv.setTextColor(Color.parseColor("#388E3C")); // Green for correct
-            } else {
-                tv.setTextColor(Color.parseColor("#D32F2F")); // Red for wrong
-            }
-
-            questionLayout.addView(tv);
+        if(percent>=50){
+            content.setBackgroundColor(Color.parseColor("#E8F5E9"));
+            playSound(R.raw.win);
+        } else {
+            content.setBackgroundColor(Color.parseColor("#FFEBEE"));
+            playSound(R.raw.fail);
         }
 
-        ((LinearLayout) findViewById(R.id.main)).addView(scrollView);
+        // STARS
+        int stars = percent>=90?3:percent>=70?2:percent>=50?1:0;
+        int[] starIds={R.id.star1,R.id.star2,R.id.star3};
 
-        // Back and Done buttons
-        Button back = findViewById(R.id.back);
-        back.setOnClickListener(v -> finish());
+        for(int i=0;i<3;i++){
+            ImageView s=findViewById(starIds[i]);
+            s.setImageResource(i<stars?R.drawable.star_full:R.drawable.star_empty);
+        }
 
-        Button done = findViewById(R.id.done);
-        done.setOnClickListener(v -> finish());
+        // TROPHY
+        if(percent>=80){
+            ImageView trophy=findViewById(R.id.trophy);
+            trophy.setVisibility(View.VISIBLE);
+            Animation bounce= AnimationUtils.loadAnimation(this,android.R.anim.slide_in_left);
+            bounce.setRepeatCount(Animation.INFINITE);
+            bounce.setRepeatMode(Animation.REVERSE);
+            trophy.startAnimation(bounce);
+        }
+
+        // ANIMAL
+        ImageView animal=findViewById(R.id.animal);
+        animal.setImageResource(percent>=50?R.drawable.animal_happy:R.drawable.animal_sad);
+
+        // PROGRESS BAR
+        ProgressBar pb=findViewById(R.id.progressBar);
+        pb.setMax(total);
+        ObjectAnimator.ofInt(pb,"progress",0,score).setDuration(1200).start();
+
+        // SCORE BAR
+        View bar=findViewById(R.id.scoreBar);
+        bar.post(()->{
+            int w=((View)bar.getParent()).getWidth();
+            int target=(int)(w*percent/100f);
+            bar.getLayoutParams().width=target;
+            bar.requestLayout();
+        });
+
+        // QUESTION LIST
+        LinearLayout container=findViewById(R.id.questionContainer);
+        if(questions!=null){
+            for(int i=0;i<questions.size();i++){
+                TextView tv=new TextView(this);
+                tv.setTextSize(18);
+                tv.setPadding(8,8,8,8);
+                String txt=(i+1)+". "+questions.get(i)+" = "+correctAnswers.get(i)
+                        +" | Your: "+userAnswers.get(i);
+                tv.setText(txt);
+                tv.setTextColor(
+                        correctAnswers.get(i).equals(userAnswers.get(i))
+                                ? Color.parseColor("#2E7D32")
+                                : Color.parseColor("#C62828")
+                );
+                container.addView(tv);
+            }
+        }
+
+        // BUTTONS
+        findViewById(R.id.back).setOnClickListener(v->finish());
+        findViewById(R.id.done).setOnClickListener(v->finish());
+    }
+
+    @Override protected void onPause(){
+        super.onPause();
+        if(videoView!=null) videoView.pause();
+    }
+
+    @Override protected void onResume(){
+        super.onResume();
+        if(videoView!=null) videoView.start();
     }
 }

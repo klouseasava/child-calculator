@@ -32,5 +32,6 @@
     <string name="pass">pass</string>
     <string name="back">⬅</string>
     <string name="done">Done</string>
+    <string name="waiting">waiting</string>
 
 </resources>
