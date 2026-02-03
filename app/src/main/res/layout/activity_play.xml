@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background"
+    tools:context=".Play">
+
+    <TextView
+        android:id="@+id/tv_difficulty_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/fuzzybubbles_bold"
+        android:text="EASY"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:shadowColor="#40000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_question_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/fuzzybubbles_bold"
+        android:text="Question: 1 / 10"
+        android:textColor="@color/primary_dark_blue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:shadowColor="#40000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Top Display Area -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/display_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_difficulty_display">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btb_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvcalculation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fuzzybubbles_bold"
+                android:text="7 + 5 ="
+                android:textColor="@color/white"
+                android:textSize="36sp" />
+
+            <EditText
+                android:id="@+id/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/display_bg"
+                android:enabled="false"
+                android:fontFamily="@font/fuzzybubbles_bold"
+                android:gravity="center"
+                android:hint="?"
+                android:inputType="none"
+                android:padding="12dp"
+                android:textColor="@color/accent_orange"
+                android:textSize="32sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Number Keypad using LinearLayout for better control -->
+    <LinearLayout
+        android:id="@+id/keypad_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_actions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/display_card">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <android.widget.Button android:id="@+id/seven" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/seven" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/eight" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/eight" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/nine" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/nine" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <android.widget.Button android:id="@+id/four" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/four" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/five" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/five" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/six" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/six" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <android.widget.Button android:id="@+id/one" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/one" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/two" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/two" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/three" style="@style/CalcButtonStyle" android:text="@string/three" android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <android.widget.Button android:id="@+id/zero" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/zero" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/point" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:text="@string/point" android:layout_weight="1" />
+            <android.widget.Button android:id="@+id/clear_btn" style="@style/CalcButtonStyle" android:layout_height="match_parent" android:backgroundTint="#FF9800" android:text="C" android:layout_weight="1" />
+        </LinearLayout>
+
+        <android.widget.Button
+            android:id="@+id/minus_btn"
+            style="@style/CalcButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:backgroundTint="#FF9800"
+            android:text="-" />
+
+    </LinearLayout>
+
+    <!-- Bottom Actions -->
+    <LinearLayout
+        android:id="@+id/bottom_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_footer">
+
+        <android.widget.Button
+            android:id="@+id/back_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/btb_background"
+            android:backgroundTint="#D32F2F"
+            android:fontFamily="@font/fuzzybubbles_bold"
+            android:paddingVertical="12dp"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <android.widget.Button
+            android:id="@+id/submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="2"
+            android:background="@drawable/btb_background"
+            android:backgroundTint="#388E3C"
+            android:fontFamily="@font/fuzzybubbles_bold"
+            android:paddingVertical="12dp"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/fuzzybubbles_bold"
+        android:text="© by Mr.H4CK3R 2026"
+        android:textColor="@color/primary_dark_blue"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Balloon Overlay Container -->
+    <FrameLayout
+        android:id="@+id/balloon_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        android:clipChildren="false"
+        android:clipToPadding="false" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
